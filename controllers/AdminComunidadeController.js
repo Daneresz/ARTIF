@@ -195,7 +195,14 @@ class AdminComunidadeController {
 
             await registrarDeletado('post', post._id, post.toObject());
             await Post.findByIdAndDelete(postId);
-            res.redirect('/admin/comunidades/posts/' + id);
+            
+            // Detectar de onde veio a requisição para redirecionar corretamente
+            const referer = req.get('referer') || '';
+            if (referer.includes('/admin/comunidades/ver/')) {
+                res.redirect('/admin/comunidades/ver/' + id);
+            } else {
+                res.redirect('/admin/comunidades/posts/' + id);
+            }
         } catch (erro) {
             console.log(erro);
             res.status(500).send('Erro ao deletar post');

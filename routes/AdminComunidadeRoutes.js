@@ -26,6 +26,7 @@ router.get('/admin/comunidades/membros/:id', AdminComunidadeController.visualiza
 router.get('/admin/comunidades/posts/:id', AdminComunidadeController.posts);
 router.get('/admin/comunidades/posts/:id/del/:postId', AdminComunidadeController.deletarPostDaPagina);
 router.get('/admin/comunidades/ver/:id', AdminComunidadeController.ver);
+router.get('/admin/comunidades/ver/:id/post/:postId/del', AdminComunidadeController.deletarPostDaPagina);
 router.get('/admin/comunidades/edt/:id', AdminComunidadeController.openEdt);
 router.post('/admin/comunidades/edt/:id', AdminComunidadeController.edt);
 router.post('/admin/comunidades/:id/post', AdminComunidadeController.criarPostAdm);
