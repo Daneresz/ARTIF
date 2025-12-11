@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get('/admin/comunidades/add', AdminComunidadeController.openAdd);
-router.post('/admin/comunidades/add', upload.single('imagem'), AdminComunidadeController.add);
+router.post('/admin/comunidades/add', AdminComunidadeController.add);
 router.get('/admin/comunidades/lst', AdminComunidadeController.list);
 router.get('/admin/comunidades/membros/:id', AdminComunidadeController.visualizarMembros);
 router.get('/admin/comunidades/posts/:id', AdminComunidadeController.posts);

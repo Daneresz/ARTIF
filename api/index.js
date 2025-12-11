@@ -32,7 +32,15 @@ const diskUploadMiddleware = (req, res, next) => {
             const filename = Date.now() + '-' + file.originalname;
             const filepath = join(uploadDir, filename);
             fs.writeFileSync(filepath, file.buffer);
-            return { ...file, filename };
+            // Retornar objeto compatível com os controllers
+            return {
+                fieldname: file.fieldname,
+                originalname: file.originalname,
+                filename: filename,
+                path: filepath,
+                mimetype: file.mimetype,
+                size: file.size
+            };
         });
     }
     next();

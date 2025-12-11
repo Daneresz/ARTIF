@@ -35,7 +35,7 @@ router.get('/cliente/artes/lst', arteControl.list)
 
 // POSTS ROUTES
 router.get('/cliente/posts/add', postControl.openAdd)
-router.post('/cliente/posts/add', upload.any(), postControl.add)
+router.post('/cliente/posts/add', postControl.add)
 router.get('/cliente/posts/lst', postControl.list)
 
 export default router

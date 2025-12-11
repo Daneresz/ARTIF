@@ -36,10 +36,10 @@ const caminhobase = 'posts/'
 
 router.get('/' + caminhobase, controle.publicList)
 router.get('/' + caminhobase + 'add', controle.openAdd)
-router.post('/' + caminhobase + 'add', upload.any(), controle.add)
+router.post('/' + caminhobase + 'add', controle.add)
 router.get('/' + caminhobase + 'lst', controle.list)
 router.get('/' + caminhobase + 'edt/:id', controle.openEdt)
-router.post('/' + caminhobase + 'edt/:id', upload.any(), controle.edt)
+router.post('/' + caminhobase + 'edt/:id', controle.edt)
 router.get('/' + caminhobase + 'del/:id', controle.del)
 
 export default router

@@ -24,10 +24,10 @@ const upload = multer({ storage });
 const clienteCommunityViewController = new ClienteComunidadeViewController();
 
 router.get('/cliente/comunidades/add', ClienteComunidadeController.openAdd);
-router.post('/cliente/comunidades/add', upload.single('imagem'), ClienteComunidadeController.add);
+router.post('/cliente/comunidades/add', ClienteComunidadeController.add);
 router.get('/cliente/comunidades/lst', ClienteComunidadeController.list);
 router.get('/cliente/comunidades/ver/:id', clienteCommunityViewController.ver);
-router.post('/cliente/comunidades/ver/:id/post', upload.single('imagem'), clienteCommunityViewController.adicionarPost);
+router.post('/cliente/comunidades/ver/:id/post', clienteCommunityViewController.adicionarPost);
 router.get('/cliente/comunidades/ver/:comunidadeId/post/:postId/del', clienteCommunityViewController.deletarPost);
 router.get('/cliente/comunidades/entrar/:id', ClienteComunidadeMembroController.entrar);
 router.post('/cliente/comunidades/entrar/:id', ClienteComunidadeMembroController.adicionarMembro);
