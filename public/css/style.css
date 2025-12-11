@@ -119,51 +119,39 @@ h1 {
   padding: 12px 22px;
   border: none;
   border-radius: 999px;
-  /* mais pill aesthetic */
   cursor: pointer;
   font-size: 0.9rem;
   color: #fff;
   transition: 0.25s ease;
   font-weight: 500;
   letter-spacing: 0.5px;
-}
-
-/* Botão padrão usando gradiente das duas cores */
-.btn {
   background: linear-gradient(90deg, #E53935, #F9A825);
   box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3);
 }
 
-/* efeito flutuante */
 .btn:hover {
-  transform: translateY(-1px) scale(1.01);
+  transform: translateY(-2px);
   opacity: 0.9;
 }
 
 /* Editar → laranja sólido */
 .btn.edit {
   background: #F9A825;
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(249, 168, 37, 0.3);
 }
 
 .btn.edit:hover {
   background: #FF9800;
   box-shadow: 0 8px 20px rgba(249, 168, 37, 0.4);
-  transform: translateY(-2px);
 }
 
 /* Excluir → vermelho escuro */
 .btn.delete {
   background: #C62828;
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(198, 40, 40, 0.3);
 }
 
 .btn.delete:hover {
   background: #B71C1C;
   box-shadow: 0 8px 20px rgba(198, 40, 40, 0.4);
-  transform: translateY(-2px);
 }
 
 /* Cancelar → tom suave da paleta */
