@@ -1,7 +1,6 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import multer from 'multer';
 import routes from './routes/route.js';
 
 const app = express();
@@ -14,22 +13,9 @@ app.set('view engine', 'ejs');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Configurar multer para uploads
-const storage = multer.diskStorage({
-  destination: join(__dirname, '/public/uploads'),
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage });
-
 // Servir arquivos estáticos
 app.use(express.static(join(__dirname, '/public')));
 app.set('views', join(__dirname, '/views'));
-
-// Middleware de upload em todas as rotas POST
-app.use(upload.any());
 
 // Rotas
 app.use(routes);

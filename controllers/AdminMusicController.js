@@ -9,15 +9,6 @@ export default class AdminMusicController {
     constructor(caminhoBase = 'admin/artista/') {
         this.caminhoBase = caminhoBase
 
-        this._getFile = (req, fieldName) => {
-            if (!req.files) return null
-            if (req.files[fieldName]) return req.files[fieldName][0]
-            if (Array.isArray(req.files)) {
-                return req.files.find(f => f.fieldname === fieldName) || null
-            }
-            return null
-        }
-
         this.openAdd = async (req, res) => {
             try {
                 const artes = await Arte.find().sort({ titulo: 1 })
@@ -36,9 +27,6 @@ export default class AdminMusicController {
 
         this.add = async (req, res) => {
             try {
-                const imagemFile = this._getFile(req, 'perfil')
-                const imagemPath = imagemFile ? '/uploads/' + imagemFile.filename : ''
-
                 if (!req.body.artista || !req.body.artista.trim()) {
                     return res.status(400).send('Nome do artista é obrigatório')
                 }
@@ -56,10 +44,10 @@ export default class AdminMusicController {
                     artes: artes,
                     arte: artes.length > 0 ? artes[0] : 'Apenas Explorando',
                     idade: Number(req.body.idade),
-                    perfil: imagemPath,
+                    perfil: '', // Sem imagem por enquanto (compatível com Vercel)
                     explorer: artes.length === 0,
                 })
-                res.redirect('/' + this.caminhoBase + 'add')
+                res.redirect('/' + this.caminhoBase + 'lst')
             } catch (err) {
                 console.error('Erro ao adicionar artista:', err)
                 res.status(500).send('Erro ao adicionar artista: ' + err.message)
@@ -110,7 +98,6 @@ export default class AdminMusicController {
         this.edt = async (req, res) => {
             try {
                 const id = req.params.id
-                const imagemFile = this._getFile(req, 'perfil')
                 
                 if (!req.body.artista || !req.body.artista.trim()) {
                     return res.status(400).send('Nome do artista é obrigatório')
@@ -131,7 +118,6 @@ export default class AdminMusicController {
                     idade: Number(req.body.idade),
                     explorer: artes.length === 0,
                 }
-                if (imagemFile) update.perfil = '/uploads/' + imagemFile.filename
 
                 await Musica.findByIdAndUpdate(id, update)
                 res.redirect('/' + this.caminhoBase + 'lst')
