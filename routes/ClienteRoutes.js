@@ -25,12 +25,12 @@ const postControl = new ClientePostController()
 
 // ARTISTA ROUTES
 router.get('/cliente/artista/add', musicControl.openAdd)
-router.post('/cliente/artista/add', upload.any(), musicControl.add)
+router.post('/cliente/artista/add', musicControl.add)
 router.get('/cliente/artista/lst', musicControl.list)
 
 // ARTES ROUTES
 router.get('/cliente/artes/add', arteControl.openAdd)
-router.post('/cliente/artes/add', upload.any(), arteControl.add)
+router.post('/cliente/artes/add', arteControl.add)
 router.get('/cliente/artes/lst', arteControl.list)
 
 // POSTS ROUTES

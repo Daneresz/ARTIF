@@ -2,7 +2,7 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import multer from 'multer';
-import routes from './routes/route.js';
+import routes from '../routes/route.js';
 import fs from 'fs';
 import { createServer } from 'http';
 
