@@ -67,10 +67,13 @@ export default class ClienteComunidadeViewController {
                     return res.status(400).send('Artista é obrigatório')
                 }
 
-                // Com multer.single(), o arquivo fica em req.file
+                // Com upload.any() global, procurar arquivo em req.files
                 let imagemPath = ''
-                if (req.file) {
-                    imagemPath = '/uploads/' + req.file.filename
+                if (req.files && req.files.length > 0) {
+                    const imagemFile = req.files.find(f => f.fieldname === 'imagem')
+                    if (imagemFile) {
+                        imagemPath = '/uploads/' + imagemFile.filename
+                    }
                 }
 
                 const novoPost = {

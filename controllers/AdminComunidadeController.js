@@ -212,7 +212,14 @@ class AdminComunidadeController {
                 return res.status(404).send('Comunidade não encontrada');
             }
 
-            const imagem = req.file ? `/uploads/${req.file.filename}` : '';
+            // Com upload.any() global, procurar arquivo em req.files
+            let imagem = '';
+            if (req.files && req.files.length > 0) {
+                const imagemFile = req.files.find(f => f.fieldname === 'imagem')
+                if (imagemFile) {
+                    imagem = `/uploads/${imagemFile.filename}`
+                }
+            }
 
             await Post.create({
                 titulo: 'Post do Administrador',
