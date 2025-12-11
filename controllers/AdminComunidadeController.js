@@ -231,6 +231,27 @@ class AdminComunidadeController {
             res.status(500).send('Erro ao criar post');
         }
     }
+
+    async ver(req, res) {
+        try {
+            const { id } = req.params;
+            const comunidade = await Comunidade.findById(id);
+            if (!comunidade) {
+                return res.status(404).send('Comunidade não encontrada');
+            }
+
+            const posts = await Post.find({ comunidade: id }).sort({ createdAt: -1 });
+            
+            res.render('admin/comunidades/ver', { 
+                comunidade, 
+                posts,
+                comunidadeId: id
+            });
+        } catch (erro) {
+            console.log(erro);
+            res.status(500).send('Erro ao carregar comunidade');
+        }
+    }
 }
 
 export default new AdminComunidadeController();

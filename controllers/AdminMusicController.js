@@ -27,6 +27,10 @@ export default class AdminMusicController {
 
         this.add = async (req, res) => {
             try {
+                // Tenta pegar arquivo, mas não falha se não encontrar (compatível com Vercel)
+                const imagemFile = req.files && req.files.length > 0 ? req.files.find(f => f.fieldname === 'perfil') : null
+                const imagemPath = imagemFile ? '/uploads/' + imagemFile.filename : ''
+
                 if (!req.body.artista || !req.body.artista.trim()) {
                     return res.status(400).send('Nome do artista é obrigatório')
                 }
@@ -44,7 +48,7 @@ export default class AdminMusicController {
                     artes: artes,
                     arte: artes.length > 0 ? artes[0] : 'Apenas Explorando',
                     idade: Number(req.body.idade),
-                    perfil: '', // Sem imagem por enquanto (compatível com Vercel)
+                    perfil: imagemPath,
                     explorer: artes.length === 0,
                 })
                 res.redirect('/' + this.caminhoBase + 'lst')
@@ -98,6 +102,7 @@ export default class AdminMusicController {
         this.edt = async (req, res) => {
             try {
                 const id = req.params.id
+                const imagemFile = req.files && req.files.length > 0 ? req.files.find(f => f.fieldname === 'perfil') : null
                 
                 if (!req.body.artista || !req.body.artista.trim()) {
                     return res.status(400).send('Nome do artista é obrigatório')
@@ -118,6 +123,7 @@ export default class AdminMusicController {
                     idade: Number(req.body.idade),
                     explorer: artes.length === 0,
                 }
+                if (imagemFile) update.perfil = '/uploads/' + imagemFile.filename
 
                 await Musica.findByIdAndUpdate(id, update)
                 res.redirect('/' + this.caminhoBase + 'lst')

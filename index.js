@@ -1,6 +1,7 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import multer from 'multer';
 import routes from './routes/route.js';
 
 const app = express();
@@ -13,9 +14,39 @@ app.set('view engine', 'ejs');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Configurar multer para salvar em memória (compatível com Vercel)
+const storage = multer.memoryStorage();
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
+
+// Middleware customizado para converter arquivo em memória para disco (apenas localmente)
+const diskUploadMiddleware = (req, res, next) => {
+    if (process.env.NODE_ENV !== 'production' && req.files && req.files.length > 0) {
+        // Em desenvolvimento, salvar em disco
+        const fs = require('fs');
+        const path = require('path');
+        const uploadDir = join(__dirname, 'public/uploads');
+        
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        req.files = req.files.map(file => {
+            const filename = Date.now() + '-' + file.originalname;
+            const filepath = join(uploadDir, filename);
+            fs.writeFileSync(filepath, file.buffer);
+            return { ...file, filename };
+        });
+    }
+    next();
+};
+
 // Servir arquivos estáticos
 app.use(express.static(join(__dirname, '/public')));
 app.set('views', join(__dirname, '/views'));
+
+// Middleware de upload em todas as rotas POST
+app.use(upload.any());
+app.use(diskUploadMiddleware);
 
 // Rotas
 app.use(routes);

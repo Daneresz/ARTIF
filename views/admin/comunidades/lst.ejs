@@ -29,6 +29,7 @@
                         <%= comunidade.membros ? comunidade.membros.length : 0 %>
                     </td>
                     <td>
+                        <a href="/admin/comunidades/ver/<%= comunidade._id %>" class="btn edit">Ver</a>
                         <a href="/admin/comunidades/edt/<%= comunidade._id %>" class="btn edit">Editar</a>
                         <a href="#" class="btn delete" onclick="event.preventDefault(); openGlobalConfirm('/admin/comunidades/del/<%= comunidade._id %>', 'Tem certeza que deseja deletar esta comunidade?')">Deletar</a>
                     </td>

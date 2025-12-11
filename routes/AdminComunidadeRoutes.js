@@ -22,6 +22,7 @@ const upload = multer({ storage });
 router.get('/admin/comunidades/add', AdminComunidadeController.openAdd);
 router.post('/admin/comunidades/add', upload.single('imagem'), AdminComunidadeController.add);
 router.get('/admin/comunidades/lst', AdminComunidadeController.list);
+router.get('/admin/comunidades/ver/:id', AdminComunidadeController.ver);
 router.get('/admin/comunidades/edt/:id', AdminComunidadeController.openEdt);
 router.post('/admin/comunidades/edt/:id', upload.single('imagem'), AdminComunidadeController.edt);
 router.get('/admin/comunidades/posts/:id', AdminComunidadeController.posts);
