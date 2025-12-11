@@ -1,6 +1,7 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import multer from 'multer';
 import routes from '../routes/route.js';
 import fs from 'fs';
 
@@ -14,18 +15,43 @@ app.set('view engine', 'ejs');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Configurar multer para salvar em memória
+const storage = multer.memoryStorage();
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
+
+// Middleware customizado para converter arquivo em memória para disco
+const diskUploadMiddleware = (req, res, next) => {
+    if (req.files && req.files.length > 0) {
+        const uploadDir = '/tmp/uploads';
+        
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
+
+        req.files = req.files.map(file => {
+            const filename = Date.now() + '-' + file.originalname;
+            const filepath = join(uploadDir, filename);
+            fs.writeFileSync(filepath, file.buffer);
+            return { ...file, filename };
+        });
+    }
+    next();
+};
+
 // Servir arquivos estáticos
 app.use(express.static(join(__dirname, '../public')));
 app.set('views', join(__dirname, '../views'));
 
+// Middleware de upload
+app.use(upload.any());
+app.use(diskUploadMiddleware);
+
 // Servir uploads do /tmp em produção (Vercel)
-if (process.env.NODE_ENV === 'production') {
-    app.use('/uploads', express.static('/tmp/uploads', { 
-        setHeaders: (res, path) => {
-            res.setHeader('Cache-Control', 'public, max-age=3600');
-        }
-    }));
-}
+app.use('/uploads', express.static('/tmp/uploads', { 
+    setHeaders: (res, path) => {
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+    }
+}));
 
 // Health check para Vercel
 app.get('/health', (req, res) => {

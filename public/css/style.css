@@ -845,3 +845,144 @@ a[href="/artista/add"] {
   transform: translateY(-1px) scale(1.01);
   opacity: 0.9;
 }
+
+/* -------- BTN POSTAR COMO ADM -------- */
+.btn-postar-adm {
+  padding: 10px 16px;
+  background: linear-gradient(90deg, #E53935, #F9A825);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+  transition: 0.2s;
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3);
+  white-space: nowrap;
+}
+
+.btn-postar-adm:hover {
+  transform: translateY(-1px) scale(1.01);
+  opacity: 0.9;
+}
+
+/* -------- MODAL POSTAR COMO ADM -------- */
+.adm-post-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.adm-post-modal.active {
+  display: flex;
+}
+
+.adm-modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(229, 57, 53, 0.25);
+  backdrop-filter: blur(6px);
+  margin: auto;
+}
+
+.adm-modal-content h2 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  background: linear-gradient(90deg, #E53935, #F9A825);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 600;
+}
+
+.adm-form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.adm-form-group label {
+  font-weight: 600;
+  color: #E53935;
+  font-size: 14px;
+}
+
+.adm-form-group input,
+.adm-form-group textarea {
+  padding: 12px 14px;
+  border: 2px solid rgba(229, 57, 53, 0.4);
+  border-radius: 14px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: 0.2s;
+}
+
+.adm-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.adm-form-group input:focus,
+.adm-form-group textarea:focus {
+  outline: none;
+  border-color: #E53935;
+  box-shadow: 0 0 0 3px rgba(249, 168, 37, 0.15), 0 0 8px rgba(249, 168, 37, 0.4);
+}
+
+.adm-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.adm-btn-cancel {
+  padding: 10px 20px;
+  border: 2px solid rgba(229, 57, 53, 0.4);
+  background: white;
+  color: #E53935;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-weight: 600;
+}
+
+.adm-btn-cancel:hover {
+  background: rgba(229, 57, 53, 0.1);
+  border-color: #F9A825;
+  color: #F9A825;
+}
+
+.adm-btn-submit {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #E53935, #F9A825);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.3);
+}
+
+.adm-btn-submit:hover {
+  transform: translateY(-1px) scale(1.01);
+  opacity: 0.9;
+}

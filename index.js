@@ -18,13 +18,16 @@ const __dirname = dirname(__filename);
 const storage = multer.memoryStorage();
 const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
 
-// Middleware customizado para converter arquivo em memória para disco (apenas localmente)
+// Middleware customizado para converter arquivo em memória para disco
 const diskUploadMiddleware = (req, res, next) => {
-    if (process.env.NODE_ENV !== 'production' && req.files && req.files.length > 0) {
-        // Em desenvolvimento, salvar em disco
+    if (req.files && req.files.length > 0) {
         const fs = require('fs');
         const path = require('path');
-        const uploadDir = join(__dirname, 'public/uploads');
+        
+        // Em produção (Vercel), usar /tmp; em dev, usar public/uploads
+        const uploadDir = process.env.NODE_ENV === 'production' 
+            ? '/tmp/uploads' 
+            : join(__dirname, 'public/uploads');
         
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });

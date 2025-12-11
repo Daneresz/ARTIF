@@ -163,6 +163,7 @@
         <div class="header-actions">
             <a href="/admin/comunidades/edt/<%= comunidade._id %>" class="btn edit">Editar</a>
             <a href="/admin/comunidades/membros/<%= comunidade._id %>" class="btn edit">Membros</a>
+            <button class="btn-postar-adm" onclick="openAdmPostModal()">📢 Postar como ADM</button>
             <a href="/admin/comunidades/lst" class="btn edit">Voltar</a>
         </div>
     </div>
@@ -209,5 +210,53 @@
         </div>
     </div>
 </div>
+
+<!-- Modal ADM Post -->
+<div class="adm-post-modal" id="admPostModal">
+    <div class="adm-modal-content">
+        <h2>Novo Post como Administrador <span class="adm-badge">ADM</span></h2>
+        <form method="post" action="/admin/comunidades/<%= comunidade._id %>/post" enctype="multipart/form-data">
+            <div class="adm-form-group">
+                <label for="descricao">Mensagem</label>
+                <textarea id="descricao" name="descricao" placeholder="O que você quer compartilhar?" required></textarea>
+            </div>
+
+            <div class="adm-form-group">
+                <label for="admImagem">Imagem (opcional)</label>
+                <input type="file" id="admImagem" name="imagem" accept="image/*">
+            </div>
+
+            <div class="adm-modal-actions">
+                <button type="button" class="adm-btn-cancel" onclick="closeAdmPostModal()">Cancelar</button>
+                <button type="submit" class="adm-btn-submit">Postar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openAdmPostModal() {
+        document.getElementById('admPostModal').classList.add('active');
+        document.getElementById('descricao').focus();
+    }
+
+    function closeAdmPostModal() {
+        document.getElementById('admPostModal').classList.remove('active');
+    }
+
+    // Fechar ao clicar fora
+    document.getElementById('admPostModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAdmPostModal();
+        }
+    });
+
+    // Fechar com Escape
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeAdmPostModal();
+        }
+    });
+</script>
 
 <%- include('../../rodape.ejs') %>

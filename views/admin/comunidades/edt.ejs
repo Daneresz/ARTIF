@@ -25,14 +25,6 @@
             <% }) %>
         </select>
         
-        <label>Imagem:</label>
-        <% if (Comunidade.imagem) { %>
-            <div style="margin-bottom: 10px;">
-                <img src="<%= Comunidade.imagem %>" alt="imagem" style="width:100px; height:auto">
-            </div>
-        <% } %>
-        <input type="file" name="imagem" accept="image/*">
-        
         <button type="submit">Atualizar</button>
     </form>
 
