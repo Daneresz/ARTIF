@@ -1,0 +1,31 @@
+<%- include('../../cabecalho.ejs') %>
+    <div style="margin-bottom: 20px;">
+        <a href="/admin/comunidades/lst" class="card-link view">← Voltar para Comunidades</a>
+    </div>
+    <h1>Adicionar Comunidade</h1>
+    <% if (erro) { %>
+        <div style="color: red; margin-bottom: 16px; padding: 10px; background-color: #ffe0e0; border-radius: 4px;">
+            <%= erro %>
+        </div>
+    <% } %>
+    <form method="post" enctype="multipart/form-data">
+        <label>Nome da Comunidade:</label>
+        <input type="text" name="nome" required>
+        
+        <label>Descrição:</label>
+        <textarea name="descricao" required></textarea>
+        
+        <label>Arte:</label>
+        <select name="arte" required>
+            <option value="">Selecione uma arte</option>
+            <% Artes.forEach(arte => { %>
+                <option value="<%= arte.titulo %>"><%= arte.titulo %></option>
+            <% }) %>
+        </select>
+        
+        <label>Imagem:</label>
+        <input type="file" name="imagem" accept="image/*">
+        
+        <button type="submit">Adicionar</button>
+    </form>
+    <%- include('../../rodape.ejs') %>

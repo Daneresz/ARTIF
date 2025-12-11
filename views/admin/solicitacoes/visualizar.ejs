@@ -1,0 +1,63 @@
+<%- include('../../cabecalho.ejs') %>
+    <div style="margin-bottom: 20px;">
+        <a href="/admin/solicitacoes/lst" class="card-link view">← Voltar para Solicitações</a>
+    </div>
+    <h1>Visualizar Solicitação</h1>
+    
+    <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+        <div style="margin-bottom: 15px;">
+            <strong>Tipo:</strong>
+            <span style="background-color: <%= solicitacao.tipo === 'arte' ? '#e3f2fd' : '#f3e5f5' %>; padding: 4px 8px; border-radius: 4px; text-transform: capitalize;">
+                <%= solicitacao.tipo %>
+            </span>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Status:</strong>
+            <span style="background-color: <%= solicitacao.status === 'pendente' ? '#fff3e0' : solicitacao.status === 'aceita' ? '#e8f5e9' : '#ffebee' %>; padding: 4px 8px; border-radius: 4px; text-transform: capitalize;">
+                <%= solicitacao.status %>
+            </span>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Nome:</strong> <%= solicitacao.nome %>
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <strong>Descrição:</strong>
+            <p><%= solicitacao.descricao %></p>
+        </div>
+        
+        <% if (solicitacao.arte) { %>
+            <div style="margin-bottom: 15px;">
+                <strong>Arte:</strong> <%= solicitacao.arte %>
+            </div>
+        <% } %>
+        
+        <% if (solicitacao.imagem) { %>
+            <div style="margin-bottom: 15px;">
+                <strong>Imagem:</strong>
+                <img src="<%= solicitacao.imagem %>" alt="imagem" style="max-width: 300px; height: auto; border-radius: 4px;">
+            </div>
+        <% } %>
+        
+        <% if (solicitacao.status === 'rejeitada' && solicitacao.motivoRejeicao) { %>
+            <div style="margin-bottom: 15px; background-color: #ffebee; padding: 10px; border-radius: 4px;">
+                <strong>Motivo da Rejeição:</strong>
+                <p><%= solicitacao.motivoRejeicao %></p>
+            </div>
+        <% } %>
+        
+        <div style="margin-top: 20px;">
+            <strong>Criada em:</strong> <%= new Date(solicitacao.createdAt).toLocaleDateString('pt-BR') %>
+        </div>
+    </div>
+    
+    <% if (solicitacao.status === 'pendente') { %>
+        <div style="display: flex; gap: 10px;">
+            <a href="/admin/solicitacoes/aceitar/<%= solicitacao._id %>" style="text-decoration: none; background-color: #28a745; color: white; padding: 10px 20px; border-radius: 4px; font-weight: bold;">✓ Aceitar</a>
+            <a href="/admin/solicitacoes/rejeitar/<%= solicitacao._id %>" style="text-decoration: none; background-color: #dc3545; color: white; padding: 10px 20px; border-radius: 4px; font-weight: bold;">✗ Rejeitar</a>
+        </div>
+    <% } %>
+    
+    <%- include('../../rodape.ejs') %>

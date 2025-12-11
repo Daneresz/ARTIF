@@ -1,0 +1,35 @@
+<%- include('../../cabecalho.ejs') %>
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="/admin" class="card-link view">← Voltar para Admin</a>
+        <a href="/admin/artes/add" class="card-link create">+ Nova Arte</a>
+    </div>
+    <h1>Gerenciar Artes</h1>
+    <form method="get" action="/admin/artes/lst" style="margin-bottom: 16px;">
+        <input type="text" name="busca" placeholder="Pesquisar por Título"
+            value="<%= typeof busca !== 'undefined' ? busca : '' %>">
+        <button type="submit">Buscar</button>
+    </form>
+    <table>
+        <tr>
+            <td>Título</td>
+            <td>Ações</td>
+        </tr>
+        <% if (Artes && Artes.length > 0) { %>
+            <% Artes.forEach(arte => { %>
+                <tr>
+                    <td>
+                        <strong><%= arte.titulo %></strong>
+                    </td>
+                    <td>
+                        <a href="/admin/artes/edt/<%= arte._id %>" class="btn edit">Editar</a>
+                        <a href="#" class="btn delete" onclick="event.preventDefault(); openGlobalConfirm('/admin/artes/del/<%= arte._id %>', 'Tem certeza que deseja deletar esta arte?')">Deletar</a>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="2">nada foi encontrado, verifique se digitou corretamente</td>
+            </tr>
+        <% } %>
+    </table>
+    <%- include('../../rodape.ejs') %>

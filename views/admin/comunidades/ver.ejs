@@ -1,0 +1,213 @@
+<%- include('../../cabecalho.ejs') %>
+<style>
+    .comunidade-wrapper {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .comunidade-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        gap: 20px;
+    }
+
+    .comunidade-header h1 {
+        margin: 0;
+        flex: 1;
+        font-size: 32px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-small {
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        color: #007bff;
+        display: inline-block;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .btn-small:hover {
+        background: #f5f5f5;
+    }
+
+    .btn-danger {
+        color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background: #ffe6e6;
+    }
+
+    .posts-feed {
+        background: white;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        max-width: 800px;
+    }
+
+    .posts-section {
+        border-top: 1px solid #ddd;
+    }
+
+    .post {
+        padding: 20px;
+        border-bottom: 1px solid #ddd;
+        transition: background-color 0.2s;
+    }
+
+    .post:last-child {
+        border-bottom: none;
+    }
+
+    .post:hover {
+        background-color: #f9f9f9;
+    }
+
+    .post-author {
+        margin-bottom: 12px;
+        font-weight: 600;
+        color: #333;
+        font-size: 15px;
+    }
+
+    .post-content {
+        font-size: 15px;
+        color: #555;
+        margin-bottom: 12px;
+        line-height: 1.6;
+        word-wrap: break-word;
+    }
+
+    .post-image {
+        margin: 12px 0;
+        border-radius: 4px;
+        max-width: 100%;
+        width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+        background: #f5f5f5;
+    }
+
+    .post-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+    .post-action-btn {
+        color: #dc3545;
+        cursor: pointer;
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #dc3545;
+        border-radius: 3px;
+        transition: all 0.2s;
+    }
+
+    .post-action-btn:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .empty-message {
+        padding: 40px 20px;
+        text-align: center;
+        color: #999;
+        background: #f9f9f9;
+        border-radius: 4px;
+    }
+
+    .comunidade-info {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .info-row {
+        margin-bottom: 15px;
+    }
+
+    .info-row strong {
+        display: inline-block;
+        width: 100px;
+        color: #333;
+    }
+
+    .info-row span {
+        color: #666;
+    }
+</style>
+
+<div class="comunidade-wrapper">
+    <div class="comunidade-header">
+        <div>
+            <h1><%= comunidade.nome %></h1>
+            <p style="margin: 8px 0 0 0; color: #666;"><%= comunidade.descricao %></p>
+        </div>
+        <div class="header-actions">
+            <a href="/admin/comunidades/edt/<%= comunidade._id %>" class="btn edit">Editar</a>
+            <a href="/admin/comunidades/membros/<%= comunidade._id %>" class="btn edit">Membros</a>
+            <a href="/admin/comunidades/lst" class="btn edit">Voltar</a>
+        </div>
+    </div>
+
+    <div class="comunidade-info">
+        <div class="info-row">
+            <strong>Arte:</strong>
+            <span><%= comunidade.arte %></span>
+        </div>
+    </div>
+
+    <h3>Posts da Comunidade</h3>
+    <div class="posts-feed">
+        <div class="posts-section">
+            <% if (posts && posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="post">
+                        <div class="post-author">
+                            <% if (post.artistaDeletado) { %>
+                                👤 Usuário Deletado
+                            <% } else { %>
+                                <%= post.artista %>
+                            <% } %>
+                        </div>
+                        
+                        <div class="post-content">
+                            <%= post.descricao %>
+                        </div>
+                        
+                        <% if (post.imagem) { %>
+                            <img src="<%= post.imagem %>" class="post-image" alt="Imagem do post">
+                        <% } %>
+                        
+                        <div class="post-actions">
+                            <a href="#" class="btn delete" onclick="event.preventDefault(); openGlobalConfirm('/admin/comunidades/ver/<%= comunidade._id %>/post/<%= post._id %>/del', 'Tem certeza que deseja deletar este post?')">Deletar</a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-message">
+                    Nenhum post nesta comunidade ainda.
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<%- include('../../rodape.ejs') %>

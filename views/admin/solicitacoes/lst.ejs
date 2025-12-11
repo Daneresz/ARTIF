@@ -1,0 +1,70 @@
+<%- include('../../cabecalho.ejs') %>
+    <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="/admin" class="card-link view">← Voltar para Admin</a>
+    </div>
+    <h1>Gerenciar Solicitações</h1>
+    
+    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <form method="get" action="/admin/solicitacoes/lst" style="display: flex; gap: 10px;">
+            <select name="tipo" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Todos os Tipos</option>
+                <option value="arte" <%= filtroTipo === 'arte' ? 'selected' : '' %>>Artes</option>
+                <option value="comunidade" <%= filtroTipo === 'comunidade' ? 'selected' : '' %>>Comunidades</option>
+            </select>
+            
+            <select name="status" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                <option value="">Todos os Status</option>
+                <option value="pendente" <%= filtroStatus === 'pendente' ? 'selected' : '' %>>Pendente</option>
+                <option value="aceita" <%= filtroStatus === 'aceita' ? 'selected' : '' %>>Aceita</option>
+                <option value="rejeitada" <%= filtroStatus === 'rejeitada' ? 'selected' : '' %>>Rejeitada</option>
+            </select>
+            
+            <button type="submit">Filtrar</button>
+        </form>
+    </div>
+    
+    <table>
+        <tr>
+            <td>Tipo</td>
+            <td>Nome</td>
+            <td>Status</td>
+            <td>Criada em</td>
+            <td>Ações</td>
+        </tr>
+        <% if (Solicitacoes && Solicitacoes.length > 0) { %>
+            <% Solicitacoes.forEach(sol => { %>
+                <tr>
+                    <td>
+                        <span style="background-color: <%= sol.tipo === 'arte' ? '#e3f2fd' : '#f3e5f5' %>; padding: 4px 8px; border-radius: 4px; text-transform: capitalize;">
+                            <%= sol.tipo %>
+                        </span>
+                    </td>
+                    <td>
+                        <strong><%= sol.nome %></strong>
+                    </td>
+                    <td>
+                        <span style="background-color: <%= sol.status === 'pendente' ? '#fff3e0' : sol.status === 'aceita' ? '#e8f5e9' : '#ffebee' %>; padding: 4px 8px; border-radius: 4px; text-transform: capitalize;">
+                            <%= sol.status %>
+                        </span>
+                    </td>
+                    <td>
+                        <%= new Date(sol.createdAt).toLocaleDateString('pt-BR') %>
+                    </td>
+                    <td>
+                        <a href="/admin/solicitacoes/visualizar/<%= sol._id %>" style="color: #007bff; text-decoration: none;">Ver</a> |
+                        <% if (sol.status === 'pendente') { %>
+                            <a href="/admin/solicitacoes/aceitar/<%= sol._id %>" style="color: #28a745; text-decoration: none;">Aceitar</a> |
+                            <a href="/admin/solicitacoes/rejeitar/<%= sol._id %>" style="color: #dc3545; text-decoration: none;">Rejeitar</a>
+                        <% } else { %>
+                            <span style="color: #999;">-</span>
+                        <% } %>
+                    </td>
+                </tr>
+            <% }) %>
+        <% } else { %>
+            <tr>
+                <td colspan="5">Nenhuma solicitação encontrada</td>
+            </tr>
+        <% } %>
+    </table>
+    <%- include('../../rodape.ejs') %>

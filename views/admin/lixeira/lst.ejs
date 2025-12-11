@@ -1,0 +1,263 @@
+<%- include('../../cabecalho.ejs') %>
+<style>
+    .trash-wrapper {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .trash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .trash-header h1 {
+        margin: 0;
+        font-size: 32px;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+        color: #007bff;
+        display: inline-block;
+        transition: all 0.2s;
+    }
+
+    .btn:hover {
+        background: #f5f5f5;
+    }
+
+    .btn-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-danger:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-success {
+        color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    .section-title {
+        margin-top: 30px;
+        margin-bottom: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 10px;
+    }
+
+    .item-card {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .item-info {
+        flex: 1;
+    }
+
+    .item-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .item-details {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .item-actions {
+        display: flex;
+        gap: 10px;
+        margin-left: 20px;
+    }
+
+    .item-btn {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        background: white;
+        cursor: pointer;
+        font-size: 12px;
+        text-decoration: none;
+        color: #007bff;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .item-btn:hover {
+        background: #f5f5f5;
+    }
+
+    .item-btn-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .item-btn-danger:hover {
+        background: #dc3545;
+        color: white;
+    }
+
+    .item-btn-success {
+        color: #28a745;
+        border-color: #28a745;
+    }
+
+    .item-btn-success:hover {
+        background: #28a745;
+        color: white;
+    }
+
+    .empty-message {
+        padding: 40px;
+        text-align: center;
+        color: #999;
+        background: #f9f9f9;
+        border-radius: 4px;
+        margin-top: 20px;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="trash-wrapper">
+    <a href="/admin" class="back-link">← Voltar ao Admin</a>
+
+    <div class="trash-header">
+        <h1>🗑️ Lixeira</h1>
+        <div class="header-actions">
+            <% if (deletedItems.length > 0) { %>
+                <a href="#" class="btn btn-danger" onclick="event.preventDefault(); openGlobalConfirm('/admin/lixeira/esvaziar', 'Tem certeza que deseja esvaziar a lixeira permanentemente? Esta ação não pode ser desfeita.')">Esvaziar Lixeira</a>
+            <% } %>
+        </div>
+    </div>
+
+    <% if (deletedItems.length === 0) { %>
+        <div class="empty-message">
+            A lixeira está vazia!
+        </div>
+    <% } else { %>
+        <!-- Músicas/Artistas -->
+        <% if (items.musica && items.musica.length > 0) { %>
+            <h2 class="section-title">🎵 Artistas Deletados (<%= items.musica.length %>)</h2>
+            <% items.musica.forEach(item => { %>
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-title"><%= item.dados.artista || 'Sem nome' %></div>
+                        <div class="item-details">
+                            Deletado em: <%= new Date(item.deletadoEm).toLocaleDateString('pt-BR') %>
+                            <%= new Date(item.deletadoEm).toLocaleTimeString('pt-BR') %>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="/admin/lixeira/restaurar/<%= item._id %>" class="item-btn item-btn-success">Restaurar</a>
+                        <a href="#" class="item-btn item-btn-danger" onclick="event.preventDefault(); openGlobalConfirm('/admin/lixeira/deletar/<%= item._id %>', 'Deletar este item permanentemente? Esta ação não pode ser desfeita.')">Deletar</a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <!-- Artes -->
+        <% if (items.arte && items.arte.length > 0) { %>
+            <h2 class="section-title">🎨 Artes Deletadas (<%= items.arte.length %>)</h2>
+            <% items.arte.forEach(item => { %>
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-title"><%= item.dados.titulo || 'Sem nome' %></div>
+                        <div class="item-details">
+                            Deletado em: <%= new Date(item.deletadoEm).toLocaleDateString('pt-BR') %>
+                            <%= new Date(item.deletadoEm).toLocaleTimeString('pt-BR') %>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="/admin/lixeira/restaurar/<%= item._id %>" class="item-btn item-btn-success">Restaurar</a>
+                        <a href="#" class="item-btn item-btn-danger" onclick="event.preventDefault(); openGlobalConfirm('/admin/lixeira/deletar/<%= item._id %>', 'Deletar este item permanentemente? Esta ação não pode ser desfeita.')">Deletar</a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <!-- Comunidades -->
+        <% if (items.comunidade && items.comunidade.length > 0) { %>
+            <h2 class="section-title">👥 Comunidades Deletadas (<%= items.comunidade.length %>)</h2>
+            <% items.comunidade.forEach(item => { %>
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-title"><%= item.dados.nome || 'Sem nome' %></div>
+                        <div class="item-details">
+                            Deletado em: <%= new Date(item.deletadoEm).toLocaleDateString('pt-BR') %>
+                            <%= new Date(item.deletadoEm).toLocaleTimeString('pt-BR') %>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="/admin/lixeira/restaurar/<%= item._id %>" class="item-btn item-btn-success">Restaurar</a>
+                        <a href="#" class="item-btn item-btn-danger" onclick="event.preventDefault(); openGlobalConfirm('/admin/lixeira/deletar/<%= item._id %>', 'Deletar este item permanentemente? Esta ação não pode ser desfeita.')">Deletar</a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <!-- Posts -->
+        <% if (items.post && items.post.length > 0) { %>
+            <h2 class="section-title">📝 Posts Deletados (<%= items.post.length %>)</h2>
+            <% items.post.forEach(item => { %>
+                <div class="item-card">
+                    <div class="item-info">
+                        <div class="item-title"><%= item.dados.titulo || 'Sem título' %></div>
+                        <div class="item-details">
+                            Autor: <%= item.dados.artista || 'Desconhecido' %><br>
+                            Deletado em: <%= new Date(item.deletadoEm).toLocaleDateString('pt-BR') %>
+                            <%= new Date(item.deletadoEm).toLocaleTimeString('pt-BR') %>
+                        </div>
+                    </div>
+                    <div class="item-actions">
+                        <a href="/admin/lixeira/restaurar/<%= item._id %>" class="item-btn item-btn-success">Restaurar</a>
+                        <a href="#" class="item-btn item-btn-danger" onclick="event.preventDefault(); openGlobalConfirm('/admin/lixeira/deletar/<%= item._id %>', 'Deletar este item permanentemente? Esta ação não pode ser desfeita.')">Deletar</a>
+                    </div>
+                </div>
+            <% }) %>
+        <% } %>
+    <% } %>
+</div>
+
+<%- include('../../rodape.ejs') %>
